@@ -6,27 +6,33 @@ describe('Testes da função getOpeningHours', () => {
     expect(getOpeningHours()).toEqual(hours);
   });
   it('retorna valor correto se for chamada uma função com parâmtro para fechar', () => {
-    expect(getOpeningHours('Monday', '10:10-AM')).toBe('The zoo is closed');
+    expect(getOpeningHours('Monday', '10:10-AM')).toEqual('The zoo is closed');
   });
   it('retorna valor correto se for chamada uma função com parâmetro para abrir', () => {
     expect(getOpeningHours('Tuesday', '10:10-AM')).toBe('The zoo is open');
   });
   it('retorna erro se for chamada uma função com parâmetro incompleto', () => {
-    expect(getOpeningHours('Tue', '10:10-AM')).toThrow('The day must be valid. Example: Monday');
+    expect(() => getOpeningHours('Tue', '10:10-AM')).toThrow('The day must be valid. Example: Monday');
   });
   it('retorna erro se for chamada uma função com parâmetro errado', () => {
-    expect(getOpeningHours('Friday', '10:10-ZM')).toThrow('The abbreviation must be \'AM\' or \'PM\'');
+    expect(() => getOpeningHours('Friday', '10:10-ZA')).toThrow('The abbreviation must be \'AM\' or \'PM\'');
   });
   it('retorna erro se for chamada uma função com parâmetro hora errada', () => {
-    expect(getOpeningHours('Friday', 'C0:10-AM')).toThrow('The hour should represent a number');
+    expect(() => getOpeningHours('Friday', 'C0:10-AM')).toThrow('The hour should represent a number');
   });
   it('retorna erro se for chamada uma função com parâmetro minutos errado', () => {
-    expect(getOpeningHours('Friday', '10:c0-AM')).toThrowErrorMatchingSnapshot('The minutes should represent a number');
+    expect(() => getOpeningHours('Friday', '10:c0-AM')).toThrow('The minutes should represent a number');
   });
   it('retorna erro se for chamada uma função com parâmetro hora fora do range', () => {
-    expect(getOpeningHours('Friday', '32:10-AM')).toThrow('The hour must be between 0 and 12');
+    expect(() => getOpeningHours('Friday', '32:10-AM')).toThrow('The hour must be between 0 and 12');
   });
-  it('retorna erro se for chamada uma função com parâmetro hora fora do range', () => {
-    expect(getOpeningHours('Friday', '10:79-AM')).toThrow('The minutes should represent a number');
+  it('retorna erro se for chamada uma função com parâmetro minutos fora do range', () => {
+    expect(() => getOpeningHours('Friday', '10:79-AM')).toThrow('The minutes must be between 0 and 59');
+  });
+  it('verifica se getOpeningHours é uma função', () => {
+    expect(typeof getOpeningHours).toBe('function');
+  });
+  it('retorna valor correto se for chamada uma função com parâmtro para fechar', () => {
+    expect(getOpeningHours('Monday', '12:00-AM')).toEqual('The zoo is closed');
   });
 });

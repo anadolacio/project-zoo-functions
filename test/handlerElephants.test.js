@@ -22,4 +22,7 @@ describe('Testes da função HandlerElephants', () => {
   it('retorna o valor do correto se for chamada uma função com parâmetro averageAge', () => {
     expect(handlerElephants('averageAge')).toEqual(10.5);
   });
+  it('retorna o valor do correto se for chamada uma função com parâmetro nulo', () => {
+    expect(handlerElephants('elefante')).toBeNull();
+  });
 });
