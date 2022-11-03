@@ -10,7 +10,7 @@ function countEntrants(entrants) {
 }
 
 function calculateEntry(entrants) {
-  if (entrants === undefined || Object.keys(entrants).length === 0) return 0;
+  if (!entrants || Object.keys(entrants).length === 0) return 0;
 
   const numberOfVisitants = countEntrants(entrants);
   const priceChild = numberOfVisitants.child * prices.child;
@@ -19,5 +19,5 @@ function calculateEntry(entrants) {
   return priceChild + priceAdult + priceSenior;
 }
 
-console.log(calculateEntry([]));
+console.log(calculateEntry());
 module.exports = { calculateEntry, countEntrants };
