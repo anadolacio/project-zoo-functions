@@ -1,9 +1,7 @@
 const data = require('../data/zoo_data');
 
 const { species } = data;
-const NEanimals = species.filter((specie) => {
-    if (s)
-});
+const NEanimals = species.filter((specie) => specie.location === 'NE').specie.name;
 console.log(NEanimals);
 // function getAllAnimalsInformations() {
 //     const NEanimals = species.map((specie) => specie.location === 'NE').name;
