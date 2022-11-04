@@ -55,11 +55,11 @@ function getEmployeesCoverage(parameter) {
   }
   // verificar se a propriedade name tem no objeto passado.
 
-  if (Object.hasOwn(parameter, 'name')) {
+  if ('name' in parameter) {
     return getInformationsByName(parameter);
   }
   // verificar se a propriedade id tem no objeto passado.
-  if (Object.hasOwn(parameter, 'id')) {
+  if ('id' in parameter) {
     return getInformationsById(parameter);
   }
 }
