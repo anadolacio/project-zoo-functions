@@ -1,53 +1,94 @@
 const data = require('../data/zoo_data');
 
-// const { species } = data;
+const { species } = data;
 
-// function getAnimalsFromNE() {
-//  const location = species.filter((specie) => specie.location === 'NE');
-//  const animalsNE = location.map((animal) => animal.name);
-//  const arrayAnimal = {};
-//  const animalsName = location.filter((element) => element.residents.map((resident) => resident.name));
+function findanimalsLocation() {
+  return {
+    locationNE: species.filter((specie) => specie.location === 'NE'),
+    locationNW: species.filter((specie) => specie.location === 'NW'),
+    locationSE: species.filter((specie) => specie.location === 'SE'),
+    locationSW: species.filter((specie) => specie.location === 'SW'),
+  };
+}
+const { locationNE, locationNW, locationSE, locationSW } = findanimalsLocation();
 
-//  return animalsName;
+function getAnimals() {
+  const findAnimals = (region) => region.map((element) => element.name);
+  return {
+    NE: findAnimals(locationNE),
+    NW: findAnimals(locationNW),
+    SE: findAnimals(locationSE),
+    SW: findAnimals(locationSW),
+  };
+}
 
-// }
-// console.log(getAnimalsFromNE());
-// function getAllAnimalsInformations() {
-//     const NEanimals = species.map((specie) => specie.location === 'NE').name;
-//     console.log(NEanimals);
-//     // species.map((employee) => ({ id: employee.id,
-//         //       fullName: `${employee.firstName} ${employee.lastName}`,
-//         //       species: species.filter((specie) => employee.responsibleFor.includes(specie.id))
-//         //         .map((animal) => animal.name),
-//         //       locations: species.filter((specie) => employee.responsibleFor.includes(specie.id))
-//         //         .map((animal) => animal.location),
-//         //     }));
-//  return {
-//     NE:{},
-//     NW:{},
-//     SE:{},
-//     SW:{},
-//  }
-// }
+const residentsName = () => {
+  const findResidentsName = (region) => region.map((element) => {
+    const animalsNames = {};
+    animalsNames[element.name] = element.residents.map((resident) => resident.name);
+    return animalsNames;
+  });
+  return {
+    NE: findResidentsName(locationNE),
+    NW: findResidentsName(locationNW),
+    SE: findResidentsName(locationSE),
+    SW: findResidentsName(locationSW),
+  };
+};
+function onlySort() {
+  const findResidentsName = (region) => region.map((element) => {
+    const animalsNames = {};
+    animalsNames[element.name] = element.residents.map((resident) => resident.name).sort();
+    return animalsNames;
+  });
+  return {
+    NE: findResidentsName(locationNE),
+    NW: findResidentsName(locationNW),
+    SE: findResidentsName(locationSE),
+    SW: findResidentsName(locationSW),
+  };
+}
 
-// function getAnimalMap() {
-// if (!parameter) {
-//     return employees.map((employee) => ({ id: employee.id,
-//       fullName: `${employee.firstName} ${employee.lastName}`,
-//       species: species.filter((specie) => employee.responsibleFor.includes(specie.id))
-//         .map((animal) => animal.name),
-//       locations: species.filter((specie) => employee.responsibleFor.includes(specie.id))
-//         .map((animal) => animal.location),
-//     }));
-//   }
-// verificar se a propriedade name tem no objeto passado.
-//   if (Object.hasOwn(options, 'includesNames') && Object.hasOwn(options, 'sex')) {
-//     return getInformations(options);
-//   }
-// verificar se a propriedade id tem no objeto passado.
-//   return getAllAnimalsInformations();
-// }
+function onlySex(options) {
+  const findResidentsName = (region) => region.map((e) => {
+    const animalsNames = {};
+    animalsNames[e.name] = e.residents.filter((resident) =>
+      resident.sex === options.sex).map((animalName) => animalName.name);
+    return animalsNames;
+  });
+  return {
+    NE: findResidentsName(locationNE),
+    NW: findResidentsName(locationNW),
+    SE: findResidentsName(locationSE),
+    SW: findResidentsName(locationSW),
+  };
+}
 
-// console.log(getAnimalMap());
+function keysSortAndSex(options) {
+  if (('sorted' in options) && ('sex' in options)) {
+    const findResidentsName = (region) => region.map((element) => {
+      const animalsNames = {};
+      animalsNames[element.name] = element.residents.filter((resident) =>
+        resident.sex === options.sex).map((animalName) => animalName.name).sort();
+      return animalsNames;
+    });
+    return {
+      NE: findResidentsName(locationNE),
+      NW: findResidentsName(locationNW),
+      SE: findResidentsName(locationSE),
+      SW: findResidentsName(locationSW),
+    };
+  }
+  if (!options.sex) return onlySort();
+  if (!options.sort) return onlySex(options);
+}
 
-// module.exports = getAnimalMap;
+function getAnimalMap(options) {
+  if (!options || !('includeNames' in options)) return getAnimals();
+
+  if (('sorted' in options) || ('sex' in options)) return keysSortAndSex(options);
+
+  return residentsName();
+}
+
+module.exports = getAnimalMap;
